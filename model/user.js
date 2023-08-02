@@ -11,8 +11,9 @@ const userSchema = new mongoose.Schema({
     maxlength: [40, "Name should be under 40 characters"],
   },
   email: {
-    required: [true, "Please provide an email"],
+    type: String,
     validate: [validator.isEmail, "Please enter email in correct format"],
+    required: [true, "Please provide an email"],
     unique: [true, "Email is used try different email"],
   },
   password: {
@@ -43,8 +44,10 @@ const userSchema = new mongoose.Schema({
   },
   courseAccess: [
     {
-      courseId: mongoose.Schema.Types.ObjectId,
-      ref: "Course",
+      courseId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Course",
+      },
     },
   ],
   courseCreated: [

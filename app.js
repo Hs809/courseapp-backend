@@ -10,9 +10,7 @@ const rateLimit = require("express-rate-limit");
 app.set("view engine", "ejs");
 
 // for swagger documentation
-const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
-const swaggerDocument = YAML.load("./swagger.yaml");
 
 // rate limiter middlerware
 const limiter = rateLimit({
@@ -22,9 +20,6 @@ const limiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 app.use(limiter);
-
-// swagger documentation middleware
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // regular middlewares
 app.use(express.json());
@@ -44,13 +39,13 @@ app.use(morgan("tiny"));
 
 // import all router here
 const user = require("./routes/user");
-const product = require("./routes/product");
+const course = require("./routes/course");
 const order = require("./routes/order");
 const { application } = require("express");
 const payment = require("./routes/payment");
 
 app.use("/api/v1", user);
-app.use("/api/v1", product);
+app.use("/api/v1", course);
 app.use("/api/v1", payment);
 app.use("/api/v1", order);
 

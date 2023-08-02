@@ -1,7 +1,3 @@
-const product = require("../model/course");
-
-// base - product.find()
-
 class WhereClause {
   constructor(base, bigQ) {
     this.base = base;

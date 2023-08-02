@@ -1,6 +1,5 @@
 const BigPromise = require("../middlewares/bigPromise");
 const Order = require("../model/order");
-const Product = require("../model/product");
 const CustomError = require("../utils/customerError");
 
 exports.createOrder = BigPromise(async (req, res, next) => {
