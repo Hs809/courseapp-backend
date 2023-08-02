@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
 const app = express();
 const rateLimit = require("express-rate-limit");
+const cors = require("cors");
 
 // temp check
 app.set("view engine", "ejs");
@@ -24,6 +25,7 @@ app.use(limiter);
 // regular middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 
 // for cookies and file middlewares
 app.use(cookieParser());
