@@ -18,7 +18,7 @@ router.route("/login").post(login);
 router.route("/logout").get(logout);
 router.route("/forgotPassword").post(forgotPassword);
 router.route("/password/reset/:token").post(passwordReset);
-router.route("/userDashboard").get(isLoggedIn, getLoggedInUserDetail);
+router.route("/userDetails").get(isLoggedIn, getLoggedInUserDetail);
 router.route("/changePassword").post(isLoggedIn, changePassword);
 router.route("/userDashboard/update").post(isLoggedIn, updateUserDetails);
 router.route("/app.");
