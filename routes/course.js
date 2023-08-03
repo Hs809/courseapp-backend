@@ -14,15 +14,15 @@ const {
 } = require("../controllers/courseController");
 
 // user routes
-router.route("/products").get(isLoggedIn, getAllCourses);
-router.route("/admin/product/:id").get(getOneCourse);
+router.route("/courses").get(isLoggedIn, getAllCourses);
+router.route("/course/:id").get(getOneCourse);
 router.route("/review").put(isLoggedIn, addReview);
 router.route("/review").delete(isLoggedIn, deleteReview);
 router.route("/reviews").get(isLoggedIn, getOnlyReviewsForOneProduct);
 
 // amin routes
 router
-  .route("/admin/product/add")
+  .route("/admin/course/add")
   .post(isLoggedIn, customRole("admin"), addCourse);
 router
   .route("/admin/products")

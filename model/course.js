@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 const courseSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: [true, "Please provide product name"],
+    required: [true, "Please provide Course Title"],
     trim: true,
-    maxlength: [120, "Product name should not be more than 120 characters"],
+    maxlength: [120, "Course title should not be more than 120 characters"],
   },
   price: {
     type: Number,
@@ -16,7 +16,7 @@ const courseSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide product description"],
   },
-  photo: {
+  thumbnail: {
     id: {
       type: String,
       required: true,
@@ -26,18 +26,17 @@ const courseSchema = new mongoose.Schema({
       required: true,
     },
   },
-  videos: [
-    {
-      id: {
-        type: String,
-        required: true,
-      },
-      secure_url: {
-        type: String,
-        required: true,
-      },
+  video: {
+    id: {
+      type: String,
+      required: true,
     },
-  ],
+    secure_url: {
+      type: String,
+      required: true,
+    },
+  },
+
   ratings: {
     type: Number,
     default: 0,

@@ -129,10 +129,10 @@ exports.passwordReset = BigPromise(async (req, res, next) => {
 });
 exports.getLoggedInUserDetail = BigPromise(async (req, res, next) => {
   // find the user from req.user and send the client
-  const user = await User.findById(req.user.id);
+  const user = await User.findById(req.user.id).select("-password");
   res.status(200).json({
     success: true,
-    user,
+    data: user,
   });
 });
 exports.changePassword = BigPromise(async (req, res, next) => {

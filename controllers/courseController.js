@@ -8,46 +8,45 @@ const WhereClause = require("../utils/whereClause");
 
 // users controllers
 exports.addCourse = BigPromise(async (req, res, next) => {
-  // images
-  let videosArray = [];
-
-  if (!req.files) {
-    return next(new CustomError("Images are required", 401));
+  if (!req.files.thumbnail || !req.files.video) {
+    return next(new CustomError("Video and Image are required", 401));
   }
   if (req.files) {
-    for (let index = 0; index < req.files.videos?.length; index++) {
+    if (req.files.thumbnail) {
       let result = await cloudinary.uploader.upload(
-        req.files.videos[index].tempFilePath,
+        req.files.thumbnail.tempFilePath,
         {
-          folder: "courses",
+          folder: "courses/image",
         }
       );
-
-      videosArray.push({
+      console.log({ result });
+      req.body.thumbnail = {
         id: result.public_id,
         secure_url: result.secure_url,
-      });
+      };
     }
-    if (req.files.photo) {
+    if (req.files.video) {
       let result = await cloudinary.uploader.upload(
-        req.files.photo.tempFilePath,
+        req.files.video.tempFilePath,
         {
-          folder: "courses",
+          folder: "courses/videos",
+          resource_type: "video",
         }
       );
-      req.body.photo = {
+      console.log({ result });
+      req.body.video = {
         id: result.public_id,
         secure_url: result.secure_url,
       };
     }
   }
 
-  req.body.videos = videosArray;
   req.body.user = req.user.id;
-  const product = await Course.create(req.body);
+  const course = await Course.create(req.body);
+  console.log({ course });
   res.status(200).json({
     success: true,
-    product,
+    data: course,
   });
 });
 
@@ -55,34 +54,37 @@ exports.getAllCourses = BigPromise(async (req, res, next) => {
   const resultperPage = 10;
   const totalProductCount = await Course.countDocuments();
 
-  const productsObj = new WhereClause(Course.find(), req.query)
+  const courseObj = new WhereClause(
+    Course.find().select("-video").populate("user"),
+    req.query
+  )
     .search()
     .filter();
 
-  let products = await productsObj.base;
-  const filterProductNumber = products.length;
+  let course = await courseObj.base;
+  const filterProductNumber = course.length;
 
-  // products.limit.skip()
+  // course.limit.skip()
 
-  productsObj.pager(resultperPage);
-  products = await productsObj.base.clone();
+  courseObj.pager(resultperPage);
+  course = await courseObj.base.clone();
 
   res.status(200).json({
     success: true,
-    products,
+    course,
     length: filterProductNumber,
     totalProductCount,
   });
 });
 
 exports.getOneCourse = BigPromise(async (req, res, next) => {
-  const product = await Course.findById(req.params.id);
-  if (!product) {
+  const course = await Course.findById(req.params.id);
+  if (!course) {
     return next(new CustomError("No Product Found with this id", 401));
   }
   res.status(200).json({
     success: true,
-    product,
+    course,
   });
 });
 exports.addReview = BigPromise(async (req, res, next) => {
